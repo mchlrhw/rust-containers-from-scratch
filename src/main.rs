@@ -2,6 +2,7 @@ extern crate libc;
 extern crate unshare;
 
 use std::env;
+use std::process;
 
 use unshare::{Command, Namespace};
 
@@ -17,12 +18,15 @@ fn main() {
 fn run() {
     let args = env::args().skip(2).collect::<Vec<String>>();
 
-    println!("Running [{}]", args.join(" "));
+    println!("Running [{}] as {}", args.join(" "), process::id());
 
     let mut child = Command::new("/proc/self/exe")
                             .args(&["child"])
                             .args(&args)
-                            .unshare(&[Namespace::Uts])
+                            .unshare(&[
+                                Namespace::Uts,
+                                Namespace::Pid,
+                            ])
                             .spawn()
                             .expect(&format!("/proc/self/exe failed to start"));
 
@@ -34,7 +38,7 @@ fn child() {
     let cmd = env::args().nth(2).expect("missing command");
     let args = env::args().skip(3).collect::<Vec<String>>();
 
-    println!("Running [{} {}]", cmd, args.join(" "));
+    println!("Running [{} {}] as {}", cmd, args.join(" "), process::id());
 
     unsafe {
         let hostname = "container";
