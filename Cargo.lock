@@ -17,6 +17,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "cfs"
 version = "0.1.0"
 dependencies = [
+ "libc 0.2.43 (registry+https://github.com/rust-lang/crates.io-index)",
  "unshare 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

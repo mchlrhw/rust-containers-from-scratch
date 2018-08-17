@@ -1,3 +1,4 @@
+extern crate libc;
 extern crate unshare;
 
 use std::env;
@@ -34,6 +35,11 @@ fn child() {
     let args = env::args().skip(3).collect::<Vec<String>>();
 
     println!("Running [{} {}]", cmd, args.join(" "));
+
+    unsafe {
+        let hostname = "container";
+        libc::sethostname(hostname.as_ptr() as *const i8, hostname.len());
+    }
 
     let mut child = Command::new(&cmd)
                             .args(&args)
