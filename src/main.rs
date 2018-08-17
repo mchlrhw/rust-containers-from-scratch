@@ -15,8 +15,11 @@ fn run() {
 
     println!("Running [{} {}]", cmd, args.join(" "));
 
-    Command::new(&cmd)
-            .args(args)
-            .spawn()
-            .expect(&format!("{} failed to start", &cmd));
+    let mut child = Command::new(&cmd)
+                            .args(args)
+                            .spawn()
+                            .expect(&format!("{} failed to start", &cmd));
+
+    let _ecode = child.wait()
+                      .expect("failed to wait on child");
 }
