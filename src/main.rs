@@ -1,5 +1,8 @@
+extern crate unshare;
+
 use std::env;
-use std::process::Command;
+
+use unshare::{Command, Namespace};
 
 fn main() {
     let stage = env::args().nth(1).expect("too few arguments");
@@ -16,7 +19,8 @@ fn run() {
     println!("Running [{} {}]", cmd, args.join(" "));
 
     let mut child = Command::new(&cmd)
-                            .args(args)
+                            .args(&args)
+                            .unshare(&[Namespace::Uts])
                             .spawn()
                             .expect(&format!("{} failed to start", &cmd));
 
