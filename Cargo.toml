@@ -1,0 +1,6 @@
+[package]
+name = "rust-containers-from-scratch"
+version = "0.1.0"
+authors = ["mchlrhw <4028654+mchlrhw@users.noreply.github.com>"]
+
+[dependencies]
