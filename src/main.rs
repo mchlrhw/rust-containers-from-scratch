@@ -1,4 +1,5 @@
 use std::env;
+use std::process::Command;
 
 fn main() {
     let stage = env::args().nth(1).expect("too few arguments");
@@ -9,8 +10,13 @@ fn main() {
 }
 
 fn run() {
-    let cmd = env::args().skip(2)
-                         .collect::<Vec<String>>()
-                         .join(" ");
-    println!("Running {}", cmd);
+    let cmd = env::args().nth(2).expect("missing command");
+    let args = env::args().skip(3).collect::<Vec<String>>();
+
+    println!("Running [{} {}]", cmd, args.join(" "));
+
+    Command::new(&cmd)
+            .args(args)
+            .spawn()
+            .expect(&format!("{} failed to start", &cmd));
 }
