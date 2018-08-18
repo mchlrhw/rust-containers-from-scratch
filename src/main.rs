@@ -47,7 +47,6 @@ fn child() {
 
     let mut child = Command::new(&cmd)
                             .args(&args)
-                            .unshare(&[Namespace::Uts])
                             .spawn()
                             .expect(&format!("{} failed to start", &cmd));
 
